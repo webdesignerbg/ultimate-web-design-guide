@@ -1,0 +1,1253 @@
+<article id="ultimate-web-design-guide" class="article">
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#0f1733;
+      --card2:#0c1430;
+      --text:#eaf0ff;
+      --muted:#b7c3e6;
+      --brand:#6ae4ff;
+      --brand2:#7c5cff;
+      --ok:#39d98a;
+      --warn:#ffcc66;
+      --danger:#ff6b6b;
+      --line:rgba(255,255,255,.10);
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    }
+
+    /* Layout */
+    .article{
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(106,228,255,.18), transparent 55%),
+        radial-gradient(900px 500px at 90% 0%, rgba(124,92,255,.18), transparent 55%),
+        radial-gradient(1000px 700px at 50% 110%, rgba(57,217,138,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg), #060914 70%);
+      border-radius: var(--radius2);
+      padding: 28px 14px;
+    }
+
+    .container{
+      width: min(var(--max), 100%);
+      margin-inline:auto;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      background: linear-gradient(135deg, rgba(106,228,255,.15), rgba(124,92,255,.15));
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      padding: 28px 18px;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(400px 200px at 20% 20%, rgba(106,228,255,.25), transparent 60%),
+        radial-gradient(380px 220px at 90% 10%, rgba(124,92,255,.28), transparent 65%),
+        radial-gradient(460px 260px at 55% 90%, rgba(57,217,138,.18), transparent 65%);
+      filter: blur(6px);
+      pointer-events:none;
+    }
+
+    .hero-inner{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items:center;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-size: 13px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin:0 0 10px 0;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    h1{
+      font-size: clamp(28px, 3.2vw, 46px);
+      line-height:1.12;
+      margin: 0 0 10px 0;
+      letter-spacing:-.02em;
+    }
+
+    .subhead{
+      font-size: clamp(16px, 1.35vw, 20px);
+      color: var(--muted);
+      line-height:1.6;
+      margin: 0 0 14px 0;
+      max-width: 80ch;
+    }
+
+    .hero-cta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top: 10px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      text-decoration:none;
+      cursor:pointer;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+      will-change: transform;
+      user-select:none;
+    }
+
+    .btn-primary{
+      background: linear-gradient(135deg, rgba(106,228,255,.95), rgba(124,92,255,.95));
+      color:#0a0f1f;
+      box-shadow: 0 12px 28px rgba(106,228,255,.15);
+      border-color: transparent;
+    }
+
+    .btn-ghost{
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+    }
+
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0px) scale(.99); }
+
+    .meta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .meta-row span{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(0,0,0,.15);
+    }
+
+    /* Grid */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    @media (min-width: 980px){
+      .container{ grid-template-columns: 1.35fr .65fr; gap: 18px; }
+      .hero-inner{ grid-template-columns: 1.25fr .75fr; }
+      .grid{ grid-template-columns: 1fr; }
+      .sidebar{ position: sticky; top: 16px; align-self:start; }
+    }
+
+    /* Cards */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2{
+      font-size: clamp(20px, 1.8vw, 28px);
+      letter-spacing:-.01em;
+      margin: 0 0 10px 0;
+    }
+
+    .card h3{
+      font-size: 18px;
+      margin: 18px 0 8px 0;
+      letter-spacing:-.01em;
+    }
+
+    .card h4{
+      font-size: 16px;
+      margin: 16px 0 8px 0;
+      color: var(--text);
+    }
+
+    .card p, .card li{
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    .card p{ margin: 10px 0; }
+
+    .divider{
+      height:1px;
+      background: var(--line);
+      margin: 16px 0;
+    }
+
+    /* TOC */
+    .toc{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .toc .search{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      border:1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,.18);
+    }
+
+    .toc input{
+      width:100%;
+      border:none;
+      outline:none;
+      background: transparent;
+      color: var(--text);
+      font-size:14px;
+    }
+
+    .toc a{
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      text-decoration:none;
+      color: var(--text);
+      background: rgba(0,0,0,.12);
+      transition: transform .15s ease, background .15s ease;
+    }
+
+    .toc a:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.06);
+    }
+
+    .toc small{
+      color: var(--muted);
+      font-size:12px;
+      opacity:.9;
+      white-space:nowrap;
+    }
+
+    .progress{
+      height:10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      overflow:hidden;
+      background: rgba(0,0,0,.18);
+    }
+    .progress > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(106,228,255,.95), rgba(124,92,255,.95));
+      border-radius: 999px;
+      transition: width .12s linear;
+    }
+
+    /* Callouts */
+    .callout{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 14px 14px 16px;
+      background: rgba(0,0,0,.18);
+      position:relative;
+      overflow:hidden;
+      margin: 14px 0;
+    }
+    .callout::before{
+      content:"";
+      position:absolute;
+      inset:0 auto 0 0;
+      width:6px;
+      background: linear-gradient(180deg, rgba(106,228,255,.95), rgba(124,92,255,.95));
+    }
+    .callout strong{ color: var(--text); }
+
+    .checklist{
+      display:grid;
+      gap:10px;
+      margin: 14px 0 0 0;
+      padding:0;
+      list-style:none;
+    }
+    .checklist li{
+      display:grid;
+      grid-template-columns: 18px 1fr;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.04);
+    }
+    .checklist input{ margin-top: 3px; }
+
+    /* Code blocks */
+    pre{
+      margin: 14px 0;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.35);
+      overflow:auto;
+      padding: 14px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.22);
+    }
+    code, pre{
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      color: #eaf0ff;
+    }
+    .inline-code{
+      font-family: var(--mono);
+      font-size: 0.95em;
+      padding: 2px 6px;
+      border:1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    /* Tables (responsive) */
+    .table-wrap{
+      overflow:auto;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.22);
+    }
+    table{
+      width:100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td{
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align:left;
+      vertical-align:top;
+    }
+    th{
+      color: var(--text);
+      font-size: 13px;
+      letter-spacing:.04em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,.06);
+    }
+    td{ color: var(--muted); font-size: 15px; }
+
+    /* Footer CTA */
+    .cta{
+      background: linear-gradient(135deg, rgba(57,217,138,.14), rgba(106,228,255,.14), rgba(124,92,255,.14));
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      padding: 20px 18px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .cta h2{ margin: 0 0 8px 0; }
+    .cta p{ margin: 8px 0; color: var(--muted); line-height:1.7; }
+    .cta .btn-primary{ font-weight:800; }
+
+    /* Accessibility & focus */
+    a:focus, button:focus, input:focus{
+      outline: 3px solid rgba(106,228,255,.45);
+      outline-offset: 2px;
+      border-radius: 12px;
+    }
+
+    /* Utility */
+    .sr-only{
+      position:absolute; width:1px; height:1px;
+      padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;
+    }
+    .muted{ color: var(--muted); }
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Print */
+    @media print{
+      .article{ background:#fff; color:#000; padding:0; }
+      .card, .hero, .cta{ box-shadow:none; background:#fff; border-color:#ddd; color:#000; }
+      .toc, .progress, .btn, .pill{ display:none !important; }
+      .card p, .card li, .subhead, .muted{ color:#222 !important; }
+      pre{ background:#f6f6f6; color:#111; border-color:#e5e5e5; }
+    }
+  </style>
+
+  <!-- SEO Title (requested inside article) -->
+  <title>Ultimate Web Design Guide: Strategy, UX, UI, Performance, SEO & Conversion (2026-Ready)</title>
+
+  <!-- Article Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Ultimate Web Design Guide: Strategy, UX, UI, Performance, SEO & Conversion (2026-Ready)",
+    "description": "A complete, practical web design guide covering strategy, research, UX, UI, accessibility, performance, SEO, content, tooling, and conversion — with checklists and templates.",
+    "inLanguage": "en",
+    "author": { "@type": "Person", "name": "Editorial Team" },
+    "publisher": { "@type": "Organization", "name": "Web Design Resource" },
+    
+  }
+  </script>
+
+  <!-- FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the most important part of web design?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Clarity. A great website makes it obvious what the brand offers, who it’s for, and what to do next — while loading fast and being accessible."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I optimize web design for SEO?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use a clear information architecture, descriptive headings, fast performance, mobile-first layouts, crawlable internal links, and content that matches search intent."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What should a modern web design process include?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Discovery, research, IA, wireframes, visual system, component design, content, accessibility checks, performance optimization, QA, launch, and iterative improvement."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <div class="container">
+    <!-- MAIN -->
+    <div class="grid">
+      <header class="hero card" aria-labelledby="page-title">
+        <div class="hero-inner">
+          <div>
+            <p class="kicker">
+              <span class="pill">2026-ready • Practical • Long-form</span>
+              <span class="pill">UX • UI • SEO • Performance • Conversion</span>
+            </p>
+            <h1 id="page-title">Ultimate Web Design Guide</h1>
+            <p class="subhead">
+              If you’re building (or rebuilding) a website and want it to look premium, load fast, rank well, and convert,
+              this guide is your roadmap. You’ll learn strategy, UX, UI, accessibility, performance, technical SEO, content,
+              and conversion patterns — with templates and checklists you can use immediately.
+            </p>
+
+            <div class="hero-cta" role="group" aria-label="Primary calls to action">
+              <!-- CTA Button -->
+              <a class="btn btn-primary" href="https://webdesigner.bg" target="_blank" rel="noopener noreferrer">
+                Get a Professional Web Design (webdesigner.bg) ↗
+              </a>
+
+              <!-- CTA Link (separate from button) -->
+              <a class="btn btn-ghost" href="https://webdesigner.bg" target="_blank" rel="noopener noreferrer">
+                Visit webdesigner.bg
+              </a>
+
+              <button class="btn btn-ghost" type="button" id="btn-reading-mode" aria-pressed="false">
+                Toggle Reading Mode
+              </button>
+            </div>
+
+            <div class="meta-row" aria-label="Article metadata">
+              <span>⏱️ <strong id="reading-time">~0 min</strong> read</span>
+              <span>🧭 <strong>Step-by-step</strong> process</span>
+              <span>✅ <strong>Checklists</strong> included</span>
+            </div>
+          </div>
+
+          <div class="card" style="background: rgba(0,0,0,.18);">
+            <p style="margin:0 0 10px 0;"><strong>Quick wins you can apply today</strong></p>
+            <ul class="checklist" style="margin:0;">
+              <li><input type="checkbox" /> <span>Clarify your primary audience + one main conversion goal.</span></li>
+              <li><input type="checkbox" /> <span>Use a simple navigation that matches user intent.</span></li>
+              <li><input type="checkbox" /> <span>Make speed a design feature (optimize images + fonts).</span></li>
+              <li><input type="checkbox" /> <span>Design accessible contrast and focus states by default.</span></li>
+              <li><input type="checkbox" /> <span>Write benefit-first copy and add a visible CTA above the fold.</span></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <figure class="card" aria-label="Hero image">
+        <img
+          src="web-designer-workflow-2026.jpg"
+          alt="Modern web design workflow: research, wireframes, UI system, components, testing, performance, and launch"
+          loading="lazy"
+          width="1200"
+          height="675"
+          style="width:100%;height:auto;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.04);"
+        />
+        <figcaption class="muted" style="margin-top:10px;">
+          A modern workflow isn’t linear. You’ll loop through research, prototyping, content, accessibility, performance, and iteration.
+        </figcaption>
+      </figure>
+
+      <section class="card" id="intro">
+        <h2>Why “web design” is not just visuals anymore</h2>
+        <p>
+          Modern web design is a system. It’s your brand story, information architecture, user experience, visual identity,
+          content strategy, performance, accessibility, and SEO — all working together. The best-looking website can still fail
+          if it loads slowly, confuses users, or doesn’t answer search intent.
+        </p>
+        <p>
+          In this guide, you’ll build a site like a product team would: start with goals and user needs, define structure,
+          design components, optimize performance, and test conversion paths. The result is a website that feels premium and
+          drives measurable outcomes.
+        </p>
+
+        <div class="callout">
+          <p style="margin:0;">
+            <strong>Key idea:</strong> Design is a promise. Your site should deliver on that promise quickly, clearly, and consistently — on every device.
+          </p>
+        </div>
+      </section>
+
+      <section class="card" id="strategy">
+        <h2>1) Strategy: define what success looks like</h2>
+        <p>
+          Before wireframes, you need alignment. Strategy prevents “pretty but pointless” design and keeps stakeholders focused
+          on outcomes rather than opinions. Start with a clear problem statement and a measurable goal.
+        </p>
+
+        <h3>Define your primary goal (one per page)</h3>
+        <p>
+          Every important page should have one dominant action:
+          <span class="inline-code">book a call</span>,
+          <span class="inline-code">request a quote</span>,
+          <span class="inline-code">buy</span>,
+          <span class="inline-code">subscribe</span>, or
+          <span class="inline-code">contact</span>.
+          Secondary actions are fine — but they should never compete with the main one.
+        </p>
+
+        <h3>Clarify your audience and intent</h3>
+        <ul>
+          <li><strong>Who</strong> is it for? (industry, role, maturity, budget, pain points)</li>
+          <li><strong>Why</strong> are they here? (research, compare, solve, purchase, support)</li>
+          <li><strong>What</strong> do they need to believe to take action?</li>
+          <li><strong>What</strong> objections might stop them?</li>
+        </ul>
+
+        <h3>Decide what you will measure</h3>
+        <div class="table-wrap" role="region" aria-label="Website success metrics table">
+          <table>
+            <thead>
+              <tr>
+                <th>Goal type</th>
+                <th>Example KPI</th>
+                <th>What “good” looks like</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Lead generation</td>
+                <td>Qualified form submissions</td>
+                <td>Higher intent leads, fewer junk inquiries</td>
+              </tr>
+              <tr>
+                <td>Ecommerce</td>
+                <td>Conversion rate + AOV</td>
+                <td>More completed checkouts and upsells</td>
+              </tr>
+              <tr>
+                <td>Content / SEO</td>
+                <td>Non-branded organic clicks</td>
+                <td>More relevant visits, longer engagement</td>
+              </tr>
+              <tr>
+                <td>Brand</td>
+                <td>Return visitors + direct traffic</td>
+                <td>Growing awareness and trust signals</td>
+              </tr>
+              <tr>
+                <td>Product</td>
+                <td>Activation rate</td>
+                <td>More users reaching the “aha” moment</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <p style="margin:0;">
+            <strong>Pro tip:</strong> If stakeholders can’t agree on the goal, the design will become a compromise and the website will feel generic.
+          </p>
+        </div>
+      </section>
+
+      <section class="card" id="research">
+        <h2>2) Research: build what users actually need</h2>
+        <p>
+          Research doesn’t have to be expensive. Even a few hours of structured discovery can reveal navigation labels,
+          content gaps, and conversion blockers.
+        </p>
+
+        <h3>Quick research stack</h3>
+        <ol>
+          <li><strong>Stakeholder interviews:</strong> What’s working? What’s missing? What gets asked repeatedly?</li>
+          <li><strong>User feedback:</strong> Ask 5–10 customers what confused them, what they expected, what mattered.</li>
+          <li><strong>Analytics review:</strong> Top entry pages, exit pages, internal search, device split.</li>
+          <li><strong>Competitor scan:</strong> Identify patterns, not inspiration. What do they explain well? What do they hide?</li>
+          <li><strong>SEO intent mapping:</strong> Match pages to keywords + intent (informational vs commercial).</li>
+        </ol>
+
+        <h3>Extract “jobs to be done” from your findings</h3>
+        <p>
+          Frame needs as tasks. For example:
+        </p>
+        <ul>
+          <li>“As a founder, I want to see pricing expectations quickly so I can decide whether to contact you.”</li>
+          <li>“As a buyer, I want proof (reviews, case studies) so I can trust you.”</li>
+          <li>“As a visitor, I want to understand what you do in 10 seconds.”</li>
+        </ul>
+
+        <div class="callout">
+          <p style="margin:0;">
+            <strong>Design shortcut:</strong> A page is “done” when it answers the visitor’s questions in a natural order — not when it looks finished.
+          </p>
+        </div>
+      </section>
+
+      <section class="card" id="ia">
+        <h2>3) Information architecture: make everything easy to find</h2>
+        <p>
+          Great information architecture (IA) feels invisible. Users don’t notice it — they just effortlessly get what they need.
+          Poor IA forces people to think, search, and backtrack.
+        </p>
+
+        <h3>Navigation principles that scale</h3>
+        <ul>
+          <li><strong>Use familiar labels:</strong> “Services”, “Pricing”, “Work”, “About”, “Contact” beats clever words.</li>
+          <li><strong>Limit top-level items:</strong> Aim for 5–7 links max (plus CTA).</li>
+          <li><strong>Group by user goals:</strong> People don’t think in internal departments.</li>
+          <li><strong>Make “Pricing” easy:</strong> If you can’t show exact pricing, show ranges, packages, or what affects cost.</li>
+        </ul>
+
+        <h3>Example site map for a service business</h3>
+        <pre><code>/
+├─ Services
+│  ├─ Web Design
+│  ├─ Ecommerce
+│  ├─ SEO & Content
+│  └─ Maintenance
+├─ Work (Case Studies)
+├─ Pricing
+├─ About
+└─ Contact (CTA)</code></pre>
+
+        <h3>Design your internal linking like a journey</h3>
+        <p>
+          Internal links are UX and SEO. Each page should naturally lead to the next best step. For example:
+          blog post → relevant service → case study → contact/quote.
+        </p>
+
+        <div class="callout">
+          <p style="margin:0;">
+            <strong>Rule of thumb:</strong> A visitor should never feel stuck. Every page should offer a “next step” that fits their intent.
+          </p>
+        </div>
+      </section>
+
+      <section class="card" id="ux">
+        <h2>4) UX design: build clarity, confidence, and momentum</h2>
+        <p>
+          UX is the experience of getting things done. It includes structure, content order, interaction patterns, and how people feel
+          as they move through your website.
+        </p>
+
+        <h3>Above-the-fold UX checklist</h3>
+        <ul>
+          <li><strong>One clear headline</strong> that states the outcome you create.</li>
+          <li><strong>One supporting paragraph</strong> that explains who it’s for and why it matters.</li>
+          <li><strong>Primary CTA</strong> visible without scrolling.</li>
+          <li><strong>Trust signals</strong> (logos, ratings, certifications, results).</li>
+          <li><strong>Visual context</strong> (screenshot, product preview, or real-world photo).</li>
+        </ul>
+
+        <h3>Design for scanning, not reading</h3>
+        <p>
+          Most users scan. Use:
+          <strong>short paragraphs</strong>, <strong>meaningful headings</strong>, <strong>bullets</strong>, and
+          <strong>highlighted key points</strong>. Make it easy to understand the page in 30 seconds.
+        </p>
+
+        <h3>Micro-interactions that improve UX</h3>
+        <ul>
+          <li>Sticky CTA on long pages (mobile especially)</li>
+          <li>Inline form validation (helpful, not annoying)</li>
+          <li>Clear loading states (spinners, skeleton UI)</li>
+          <li>Friendly empty states (what to do next)</li>
+          <li>Accessible focus styles for keyboard users</li>
+        </ul>
+      </section>
+
+      <section class="card" id="ui">
+        <h2>5) UI design: a visual system, not a collection of screens</h2>
+        <p>
+          Modern UI design is component-driven. Instead of designing page-by-page, build a reusable system: typography, spacing,
+          color, buttons, cards, forms, navigation, and content modules.
+        </p>
+
+        <h3>Typography that feels premium</h3>
+        <ul>
+          <li><strong>Use 2 fonts max</strong> (or 1 with multiple weights).</li>
+          <li><strong>Define a type scale</strong> (e.g., 48/36/28/20/16/14).</li>
+          <li><strong>Increase line-height</strong> for readability (1.6–1.8 for body text).</li>
+          <li><strong>Keep line length</strong> around 60–90 characters.</li>
+        </ul>
+
+        <h3>Spacing is your secret weapon</h3>
+        <p>
+          Many “bad design” impressions are actually cramped layouts. Use consistent spacing tokens
+          (8px grid is common) and give content room to breathe.
+        </p>
+
+        <h3>Color & contrast</h3>
+        <p>
+          Your brand palette should support accessibility. Make sure text contrast passes WCAG guidelines,
+          and don’t rely on color alone to communicate status (use icons + text).
+        </p>
+
+        <div class="callout">
+          <p style="margin:0;">
+            <strong>UI shortcut:</strong> If your spacing and typography are strong, your design will look professional even with minimal decoration.
+          </p>
+        </div>
+      </section>
+
+      <section class="card" id="accessibility">
+        <h2>6) Accessibility: design for everyone (and reduce legal risk)</h2>
+        <p>
+          Accessibility isn’t optional — it improves usability for all users and often boosts conversion.
+          Build accessibility into your components and QA process from day one.
+        </p>
+
+        <h3>Non-negotiables</h3>
+        <ul>
+          <li><strong>Keyboard navigation:</strong> Can you reach everything with Tab + Enter?</li>
+          <li><strong>Focus states:</strong> Visible focus rings for interactive elements.</li>
+          <li><strong>Alt text:</strong> Meaningful image descriptions (not “image1”).</li>
+          <li><strong>Form labels:</strong> Real labels, not only placeholders.</li>
+          <li><strong>Contrast:</strong> Text must be readable in all contexts.</li>
+        </ul>
+
+        <h3>Accessible content patterns</h3>
+        <ul>
+          <li>Write descriptive link text (“View ecommerce case studies”) instead of “Click here”.</li>
+          <li>Use headings in order (H2 → H3 → H4) to help screen readers.</li>
+          <li>Provide captions/transcripts for media when possible.</li>
+        </ul>
+      </section>
+
+      <section class="card" id="performance">
+        <h2>7) Performance: speed is part of design</h2>
+        <p>
+          Performance impacts everything: user satisfaction, conversion rate, SEO, and ad efficiency.
+          Treat performance as a design requirement — not an afterthought.
+        </p>
+
+        <h3>Biggest wins (usually)</h3>
+        <ul>
+          <li><strong>Images:</strong> compress, resize, and lazy-load below the fold.</li>
+          <li><strong>Fonts:</strong> use modern formats, limit weights, preconnect, and avoid blocking loads.</li>
+          <li><strong>JavaScript:</strong> ship less, split bundles, defer non-critical scripts.</li>
+          <li><strong>CSS:</strong> remove unused rules and avoid heavy animations.</li>
+          <li><strong>Hosting:</strong> use caching, CDN, HTTP/2 or HTTP/3.</li>
+        </ul>
+
+        <h3>Practical image optimization example</h3>
+        <pre><code>&lt;img
+  src="hero-1200.webp"
+  srcset="hero-640.webp 640w, hero-1200.webp 1200w, hero-1800.webp 1800w"
+  sizes="(max-width: 768px) 92vw, 1100px"
+  width="1200"
+  height="675"
+  loading="lazy"
+  decoding="async"
+  alt="Website homepage hero showing value proposition and call to action"&gt;</code></pre>
+
+        <div class="callout">
+          <p style="margin:0;">
+            <strong>UX truth:</strong> Users interpret slow loading as lack of quality — even if the design is beautiful.
+          </p>
+        </div>
+      </section>
+
+      <section class="card" id="seo">
+        <h2>8) SEO-driven design: structure, intent, and internal links</h2>
+        <p>
+          SEO is not “keywords sprinkled on a page.” It’s a system of pages that answer real queries better than alternatives,
+          in a structure that search engines can understand.
+        </p>
+
+        <h3>On-page SEO essentials (design + content)</h3>
+        <ul>
+          <li><strong>One H1 per page</strong> aligned to a primary keyword topic.</li>
+          <li><strong>Clear H2/H3 structure</strong> that matches the user’s questions.</li>
+          <li><strong>Descriptive URLs</strong> (short, readable, lowercase, hyphenated).</li>
+          <li><strong>Internal links</strong> with descriptive anchors.</li>
+          <li><strong>Schema</strong> where relevant (FAQ, Article, Product, LocalBusiness).</li>
+          <li><strong>Performance + mobile usability</strong> (affects rankings and user signals).</li>
+        </ul>
+
+        <h3>Search intent mapping example</h3>
+        <div class="table-wrap" role="region" aria-label="Search intent mapping table">
+          <table>
+            <thead>
+              <tr>
+                <th>Query type</th>
+                <th>Intent</th>
+                <th>Best page type</th>
+                <th>Conversion path</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>“web design agency near me”</td>
+                <td>Commercial</td>
+                <td>Service + location page</td>
+                <td>Call / quote</td>
+              </tr>
+              <tr>
+                <td>“how much does a website cost”</td>
+                <td>Commercial research</td>
+                <td>Pricing guide</td>
+                <td>Packages → contact</td>
+              </tr>
+              <tr>
+                <td>“best website layout for services”</td>
+                <td>Informational</td>
+                <td>Blog post</td>
+                <td>Related service CTA</td>
+              </tr>
+              <tr>
+                <td>“ecommerce design examples”</td>
+                <td>Inspiration + compare</td>
+                <td>Case studies / gallery</td>
+                <td>Consultation</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Write like a helpful expert, not a brochure</h3>
+        <p>
+          The best SEO content is useful, specific, and structured. Add examples, steps, and decision-making frameworks.
+          The more your page helps users finish their “job,” the more it earns trust and engagement.
+        </p>
+      </section>
+
+      <section class="card" id="content">
+        <h2>9) Content strategy: say the right things in the right order</h2>
+        <p>
+          Content is the engine of understanding. You can have great UI, but if your copy is vague, visitors won’t convert.
+          Great web copy reduces uncertainty and makes the next step feel safe.
+        </p>
+
+        <h3>High-converting homepage structure</h3>
+        <ol>
+          <li><strong>Value proposition:</strong> what you do and who it’s for.</li>
+          <li><strong>Proof:</strong> results, reviews, logos, metrics.</li>
+          <li><strong>Services / product overview:</strong> what you offer.</li>
+          <li><strong>How it works:</strong> steps, timeline, expectations.</li>
+          <li><strong>Case studies:</strong> before/after, outcomes.</li>
+          <li><strong>FAQ:</strong> handle objections.</li>
+          <li><strong>CTA:</strong> clear next step.</li>
+        </ol>
+
+        <h3>Copywriting framework you can reuse</h3>
+        <ul>
+          <li><strong>Problem:</strong> what’s broken or frustrating?</li>
+          <li><strong>Impact:</strong> why does it matter?</li>
+          <li><strong>Solution:</strong> what do you do differently?</li>
+          <li><strong>Proof:</strong> what evidence supports your claims?</li>
+          <li><strong>Next step:</strong> what should the user do now?</li>
+        </ul>
+
+        <div class="callout">
+          <p style="margin:0;">
+            <strong>Conversion tip:</strong> Replace “We offer…” with “You get…” and “So you can…” to make benefits explicit.
+          </p>
+        </div>
+      </section>
+
+      <section class="card" id="components">
+        <h2>10) Component-driven design: build faster and stay consistent</h2>
+        <p>
+          Component-driven design is how modern teams ship quality at scale. You design reusable blocks and assemble pages like LEGO.
+          This reduces inconsistencies, speeds up development, and makes iterations safer.
+        </p>
+
+        <h3>Core component library (starter list)</h3>
+        <ul>
+          <li>Buttons (primary, secondary, text), button groups</li>
+          <li>Forms (inputs, textareas, selects, validation states)</li>
+          <li>Cards (feature, testimonial, case study)</li>
+          <li>Navigation (header, mobile menu, breadcrumbs)</li>
+          <li>Hero blocks, feature grids, pricing tables</li>
+          <li>FAQ accordion, timelines, stats counters</li>
+        </ul>
+
+        <h3>Design tokens (the consistency layer)</h3>
+        <p>
+          Tokens are your system variables: colors, spacing, radii, typography sizes, shadows. They make your UI cohesive and easier to maintain.
+        </p>
+
+        <pre><code>/* Example token mindset */
+--space-1: 8px;
+--space-2: 12px;
+--space-3: 16px;
+--radius-1: 12px;
+--radius-2: 18px;</code></pre>
+      </section>
+
+      <section class="card" id="conversion">
+        <h2>11) Conversion design: turn attention into action</h2>
+        <p>
+          Conversion is not “tricks.” It’s removing friction and increasing confidence. A user converts when the perceived value
+          is high and the perceived risk is low.
+        </p>
+
+        <h3>Trust signals that actually work</h3>
+        <ul>
+          <li><strong>Specific outcomes:</strong> “+38% leads in 60 days” beats “great results”.</li>
+          <li><strong>Real testimonials:</strong> include role, company, and context.</li>
+          <li><strong>Case studies:</strong> show the process + outcome.</li>
+          <li><strong>Transparent expectations:</strong> timeline, deliverables, what you need from the client.</li>
+          <li><strong>Guarantees / risk reversal:</strong> where appropriate and honest.</li>
+        </ul>
+
+        <h3>CTA principles</h3>
+        <ul>
+          <li><strong>Be explicit:</strong> “Request a quote” / “Book a call” / “Get pricing”.</li>
+          <li><strong>Reduce commitment:</strong> “Get a free assessment” can work better than “Buy now” for services.</li>
+          <li><strong>Repeat the CTA</strong> after major sections on long pages.</li>
+          <li><strong>Use a strong button label</strong> that describes the outcome.</li>
+        </ul>
+
+        <div class="callout">
+          <p style="margin:0;">
+            <strong>Conversion mantra:</strong> Make the next step obvious, easy, and emotionally safe.
+          </p>
+        </div>
+      </section>
+
+      <section class="card" id="qa">
+        <h2>12) QA & launch: ship confidently</h2>
+        <p>
+          Launch is not a single moment — it’s a controlled release. QA protects your brand and prevents embarrassing issues
+          like broken forms, missing meta tags, or unreadable mobile layouts.
+        </p>
+
+        <h3>Pre-launch checklist</h3>
+        <ul class="checklist">
+          <li><input type="checkbox" /> <span>All pages have unique titles and meta descriptions.</span></li>
+          <li><input type="checkbox" /> <span>Forms work and deliver emails to the right inbox.</span></li>
+          <li><input type="checkbox" /> <span>Mobile menus work and are keyboard accessible.</span></li>
+          <li><input type="checkbox" /> <span>Images are optimized and lazy-loaded where appropriate.</span></li>
+          <li><input type="checkbox" /> <span>Analytics installed (without slowing the site).</span></li>
+          <li><input type="checkbox" /> <span>404 page exists and guides users back.</span></li>
+          <li><input type="checkbox" /> <span>Sitemap and robots rules are correct.</span></li>
+          <li><input type="checkbox" /> <span>Core pages load fast on mobile data.</span></li>
+        </ul>
+
+        <h3>Post-launch: iterate with data</h3>
+        <p>
+          After launch, track:
+          conversions, scroll depth, top exits, form drop-offs, and pages that attract organic visits. Improve content, clarify CTAs,
+          and refine navigation based on behavior — not guesses.
+        </p>
+      </section>
+
+      <section class="card" id="templates">
+        <h2>Templates you can copy-paste</h2>
+
+        <h3>Homepage headline formula</h3>
+        <p><strong>[Outcome]</strong> for <strong>[Audience]</strong> without <strong>[Pain]</strong>.</p>
+        <p class="muted">Example: “High-converting websites for local businesses without tech overwhelm.”</p>
+
+        <h3>Service page structure</h3>
+        <pre><code>H1: Service name + primary benefit
+- Who it’s for
+- What you get (deliverables)
+- How it works (steps)
+- Proof (case study + testimonials)
+- Pricing expectations
+- FAQ
+- CTA</code></pre>
+
+        <h3>Case study structure</h3>
+        <pre><code>- Client + context
+- Challenge
+- Strategy
+- Design + build approach
+- Results (numbers + screenshots)
+- What we learned
+- CTA to start a similar project</code></pre>
+      </section>
+
+      <section class="cta" id="cta">
+        <h2>Want a website that looks premium and converts?</h2>
+        <p>
+          If you want a professional website built with modern UX/UI, performance, and SEO in mind,
+          start here: <a href="https://webdesigner.bg" target="_blank" rel="noopener noreferrer">https://webdesigner.bg</a>.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://webdesigner.bg" target="_blank" rel="noopener noreferrer">
+            Start Your Project on webdesigner.bg ↗
+          </a>
+          <a class="btn btn-ghost" href="https://webdesigner.bg" target="_blank" rel="noopener noreferrer">
+            Explore Services & Pricing
+          </a>
+        </div>
+        <p class="muted" style="margin-top:10px;">
+          Tip: Bring a short list of examples you like + your main goal (leads, sales, bookings). You’ll get better recommendations faster.
+        </p>
+      </section>
+
+      <section class="card" id="faq">
+        <h2>FAQ: Ultimate Web Design Guide</h2>
+
+        <h3>How long does a website design take?</h3>
+        <p>
+          It depends on scope and readiness. A focused marketing website can be shipped quickly when goals, content, and decisions are clear.
+          Bigger sites (multi-language, ecommerce, custom integrations) naturally take longer due to content, QA, and complexity.
+        </p>
+
+        <h3>What matters more: design or SEO?</h3>
+        <p>
+          They’re connected. SEO brings qualified visitors; design helps them understand, trust, and convert. The best approach is to design pages
+          around search intent and user tasks while keeping performance and accessibility strong.
+        </p>
+
+        <h3>What should I prioritize if my budget is limited?</h3>
+        <p>
+          Prioritize clarity, a clean structure, fast performance, strong copy, and a single conversion path. You can add advanced animations and
+          extra pages later — but your core pages must be excellent from day one.
+        </p>
+      </section>
+
+      <footer class="card" id="conclusion">
+        <h2>Conclusion: build a website like a system</h2>
+        <p>
+          The “ultimate” web design guide isn’t about trends — it’s about fundamentals: strategy, clarity, structure, accessibility, speed,
+          and trustworthy messaging. When these foundations are strong, modern UI and conversion patterns become easy to apply.
+        </p>
+        <p>
+          If you want expert help turning this framework into a real site, check out
+          <a href="https://webdesigner.bg" target="_blank" rel="noopener noreferrer">webdesigner.bg</a>
+          and start with a clear goal and a simple sitemap.
+        </p>
+      </footer>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="card toc" aria-label="Table of contents">
+        <div class="progress" aria-label="Reading progress">
+          <div id="progress-bar"></div>
+        </div>
+
+        <div class="search" role="search">
+          <span aria-hidden="true">🔎</span>
+          <label for="toc-search" class="sr-only">Search sections</label>
+          <input id="toc-search" type="search" placeholder="Search sections…" autocomplete="off" />
+        </div>
+
+        <nav aria-label="On-page navigation" id="toc-links">
+          <a href="#intro"><span>Intro</span><small>Overview</small></a>
+          <a href="#strategy"><span>Strategy</span><small>Goals</small></a>
+          <a href="#research"><span>Research</span><small>Insights</small></a>
+          <a href="#ia"><span>Information Architecture</span><small>Structure</small></a>
+          <a href="#ux"><span>UX Design</span><small>Flow</small></a>
+          <a href="#ui"><span>UI Design</span><small>System</small></a>
+          <a href="#accessibility"><span>Accessibility</span><small>WCAG</small></a>
+          <a href="#performance"><span>Performance</span><small>Speed</small></a>
+          <a href="#seo"><span>SEO-driven Design</span><small>Intent</small></a>
+          <a href="#content"><span>Content Strategy</span><small>Copy</small></a>
+          <a href="#components"><span>Components</span><small>Scale</small></a>
+          <a href="#conversion"><span>Conversion</span><small>Trust</small></a>
+          <a href="#qa"><span>QA & Launch</span><small>Ship</small></a>
+          <a href="#templates"><span>Templates</span><small>Copy</small></a>
+          <a href="#cta"><span>CTA</span><small>Next step</small></a>
+          <a href="#faq"><span>FAQ</span><small>Answers</small></a>
+          <a href="#conclusion"><span>Conclusion</span><small>Wrap-up</small></a>
+        </nav>
+
+        <div class="divider"></div>
+
+        <p class="muted" style="margin:0;">
+          Need a pro to implement this? Visit
+          <a href="https://webdesigner.bg" target="_blank" rel="noopener noreferrer">webdesigner.bg</a>.
+        </p>
+      </div>
+
+      <div class="card" aria-label="Mini checklist">
+        <h2 style="font-size:18px;margin:0 0 10px 0;">Mini checklist</h2>
+        <ul class="checklist" style="margin:0;">
+          <li><input type="checkbox" /> <span>One page = one goal + one CTA</span></li>
+          <li><input type="checkbox" /> <span>Scannable headings and bullets</span></li>
+          <li><input type="checkbox" /> <span>Accessible contrast + focus</span></li>
+          <li><input type="checkbox" /> <span>Fast images + lean scripts</span></li>
+          <li><input type="checkbox" /> <span>Internal links: blog → service → CTA</span></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    (function(){
+      const $ = (sel, root=document) => root.querySelector(sel);
+      const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+      // Reading time
+      const article = $("#ultimate-web-design-guide");
+      const text = article ? article.innerText || "" : "";
+      const words = text.trim().split(/\s+/).filter(Boolean).length;
+      const minutes = Math.max(1, Math.round(words / 220)); // ~220 wpm
+      const rt = $("#reading-time");
+      if(rt) rt.textContent = "~" + minutes + " min";
+
+      // Progress bar
+      const bar = $("#progress-bar");
+      const updateProgress = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollHeight = doc.scrollHeight - doc.clientHeight;
+        const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        if(bar) bar.style.width = Math.min(100, Math.max(0, pct)).toFixed(2) + "%";
+      };
+      window.addEventListener("scroll", updateProgress, { passive: true });
+      window.addEventListener("resize", updateProgress);
+      updateProgress();
+
+      // Reading mode toggle (reduces background intensity)
+      const btnReading = $("#btn-reading-mode");
+      let reading = false;
+      if(btnReading){
+        btnReading.addEventListener("click", () => {
+          reading = !reading;
+          btnReading.setAttribute("aria-pressed", String(reading));
+          article.style.background = reading
+            ? "#050713"
+            : "";
+          // Slightly increase contrast in reading mode
+          const cards = $$(".card, .cta", article);
+          cards.forEach(c => {
+            c.style.background = reading ? "rgba(255,255,255,.05)" : "";
+          });
+        });
+      }
+
+      // TOC search filter
+      const search = $("#toc-search");
+      const toc = $("#toc-links");
+      if(search && toc){
+        const links = $$("a", toc);
+        search.addEventListener("input", () => {
+          const q = search.value.trim().toLowerCase();
+          links.forEach(a => {
+            const txt = a.innerText.toLowerCase();
+            a.style.display = txt.includes(q) ? "" : "none";
+          });
+        });
+      }
+
+      // Smooth scroll with header offset support (if your site has a sticky header)
+      const smoothScroll = (e) => {
+        const a = e.target.closest('a[href^="#"]');
+        if(!a) return;
+        const id = a.getAttribute("href");
+        if(!id || id.length < 2) return;
+        const target = document.querySelector(id);
+        if(!target) return;
+
+        e.preventDefault();
+        const headerOffset = 12; // adjust if you have a sticky header
+        const rect = target.getBoundingClientRect();
+        const offsetTop = window.pageYOffset + rect.top - headerOffset;
+
+        window.scrollTo({ top: offsetTop, behavior: "smooth" });
+        history.pushState(null, "", id);
+      };
+      document.addEventListener("click", smoothScroll);
+
+      // Persist checklist state (per page) using localStorage
+      const key = "uwdg_checklist_state_v1";
+      const boxes = $$('input[type="checkbox"]', article);
+      try{
+        const saved = JSON.parse(localStorage.getItem(key) || "[]");
+        boxes.forEach((b, i) => { b.checked = !!saved[i]; });
+        boxes.forEach((b, i) => {
+          b.addEventListener("change", () => {
+            const state = boxes.map(x => x.checked);
+            localStorage.setItem(key, JSON.stringify(state));
+          });
+        });
+      }catch(err){
+        // ignore storage errors (private mode)
+      }
+    })();
+  </script>
+</article>
